@@ -1,0 +1,239 @@
+<app-cargando [cargando]="cargando"></app-cargando>
+
+<div class="container">
+  <div class="agregar-paciente-container">
+    <mat-card>
+      <h2 class="txt-titulo">
+        {{!this.idPaciente ? "Nuevo Paciente" : "Modificar Paciente"}}
+      </h2>
+      <div class="row agregar-paciente-box">
+        <div class="container form-agregar">
+          <mat-accordion class="example-headers-align" [formGroup]="formPaciente">
+            <mat-expansion-panel [expanded]="step === 0" (opened)="setStep(0)" hideToggle>
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  Datos del paciente
+                </mat-panel-title>
+                <mat-panel-description>
+                  <mat-icon class="personal-icon">account_circle</mat-icon>
+                </mat-panel-description>
+              </mat-expansion-panel-header>
+              <div class="contenido-panel">
+                <div class="row-cols-2">
+                  <mat-form-field class="form-field" color="accent">
+                    <mat-label>Nombre</mat-label>
+                    <input matInput type="text" required formControlName="nombre">
+                    <mat-error *ngIf="formPaciente.get('nombre')?.invalid">
+                      Este campo es requerido
+                    </mat-error>
+                  </mat-form-field>
+                  <mat-form-field class="form-field" color="accent">
+                    <mat-label>Apellido</mat-label>
+                    <input matInput type="text" required formControlName="apellido">
+                    <mat-error *ngIf="formPaciente.get('apellido')?.invalid">
+                      Este campo es requerido
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+                <div class="row-cols-2">
+                  <mat-form-field class="form-field" color="accent">
+                    <mat-label>Tipo Documento</mat-label>
+                    <mat-select formControlName="tipo_documento" required >
+                      <mat-option *ngFor="let tipo of tiposDocumentos" [value]="tipo.name">
+                        {{tipo.name}}
+                      </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="formPaciente.get('tipo_documento')?.hasError('required')">
+                      Seleccionar un tipo de documento
+                    </mat-error>
+                  </mat-form-field>
+                  <mat-form-field class="form-field" color="accent">
+                    <mat-label>Documento</mat-label>
+                    <input matInput type="text" minlength="8" required formControlName="documento">
+                    <mat-error *ngIf="formPaciente.get('documento')?.hasError('required')">
+                      Por favor, ingrese un DNI, CUIT o Pasaporte válido. Verifique que los datos ingresados sean correctos
+                    </mat-error>
+                    <mat-error *ngIf="formPaciente.get('documento')?.hasError('pattern')">
+                      {{formPaciente.get('documento')?.value}} no es válido. Verifique que los datos ingresados sean correctos
+                    </mat-error>                  
+                  </mat-form-field>
+                </div>
+                <div class="row-cols-2">
+                  <mat-form-field  class="fill" color="accent" >
+                    <mat-label>Fecha de Nacimiento</mat-label>
+                    <input matInput [matDatepicker]="picker"
+                           (dateInput)="calcularEdad($event)" formControlName="fecha_nacimiento" >
+                    <mat-hint>MM/DD/YYYY</mat-hint>
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker startView="year" [startAt]="startDate" ></mat-datepicker>
+                    <mat-error *ngIf="formPaciente.get('fecha_nacimiento')?.invalid">
+                      Seleccione una fecha
+                    </mat-error>
+                  </mat-form-field>
+                  <mat-form-field class="form-field" color="accent">
+                    <mat-label>Edad</mat-label>
+                    <input matInput type="text" readonly [disabled]="true" formControlName="edad" [min]="MIN_EDAD" [max]="MAX_EDAD" [(ngModel)]="edad">
+                    <mat-error *ngIf="formPaciente.get('edad')?.invalid">
+                      La edad tiene que estar entre 14 y 99, verifique la fecha seleccionada
+                    </mat-error>
+                    <mat-error *ngIf="formPaciente.get('edad')?.hasError('required')">
+                      Este campo es requerido, seleccione la Fecha Nacimiento
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+              <mat-action-row>
+                <button mat-button color="primary" (click)="nextStep()">Siguiente</button>
+              </mat-action-row>
+            </mat-expansion-panel>
+            <mat-expansion-panel [expanded]="step === 1" (opened)="setStep(1)" hideToggle>
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  Datos personales
+                </mat-panel-title>
+                <mat-panel-description>
+                  <mat-icon class="contact_mail">contact_mail</mat-icon>
+                </mat-panel-description>
+              </mat-expansion-panel-header>
+              <div class="contenido-panel">
+                <div class="row-cols-2">
+                  <mat-form-field class="form-field" color="accent">
+                    <mat-label>Teléfono</mat-label>
+                    <input matInput type="number" formControlName="telefono">
+                    <mat-error *ngIf="formPaciente.get('telefono')?.hasError('minLength')">
+                      Mínimo 10 caracteres
+                    </mat-error>
+                  </mat-form-field>
+                  <mat-form-field class="form-field col-6" color="accent">
+                    <mat-label>Email</mat-label>
+                    <input matInput type="text" formControlName="email">
+                    <mat-error *ngIf="formPaciente.get('email')?.hasError('pattern')">
+                      El email ingresado no es válido
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+              <mat-action-row>
+                <button mat-button color="warn" (click)="prevStep()">Anterior</button>
+                <button mat-button color="primary" (click)="nextStep()">Siguiente</button>
+              </mat-action-row>
+            </mat-expansion-panel>
+            <mat-expansion-panel [expanded]="step === 2" (opened)="setStep(2)" hideToggle>
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  Dirección
+                </mat-panel-title>
+                <mat-panel-description>
+                  <mat-icon class="map-icon">map</mat-icon>
+                </mat-panel-description>
+              </mat-expansion-panel-header>
+              <div class="contenido-panel">
+                <div class="row-cols-2">
+                  <mat-form-field class="form-field" color="accent">
+                    <mat-label>Calle</mat-label>
+                    <input matInput type="text" required formControlName="calle">
+                    <mat-error *ngIf="formPaciente.get('calle')?.invalid">
+                      Este campo es requerido
+                    </mat-error>
+                  </mat-form-field>
+                  <mat-form-field class="form-field" color="accent">
+                    <mat-label>Altura</mat-label>
+                    <input matInput type="number" required formControlName="numero">
+                    <mat-error *ngIf="formPaciente.get('numero')?.invalid">
+                      Este campo es requerido
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+                <div class="row-cols-2">
+                  <mat-form-field class="form-field" color="accent">
+                    <mat-label>Localidad</mat-label>
+                    <mat-select formControlName="localidad" required>
+                      <mat-option>--</mat-option>
+                      <mat-option *ngFor="let localidad of localidades" [value]="localidad._id">
+                        {{localidad.descripcion}}
+                      </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="formPaciente.get('localidad')?.hasError('required')">Seleccionar una Localidad
+                    </mat-error>
+                  </mat-form-field>
+                  <mat-form-field class="form-field" color="accent">
+                    <mat-label>Código Postal</mat-label>
+                    <input matInput type="number" required formControlName="codigo_postal">
+                    <mat-error *ngIf="formPaciente.get('codigo_postal')?.invalid">
+                      Este campo es requerido
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+              <mat-action-row>
+                <button mat-button color="warn" (click)="prevStep()">Anterior</button>
+                <button mat-button color="primary" (click)="nextStep()">Siguiente</button>
+              </mat-action-row>
+            </mat-expansion-panel>
+            <mat-expansion-panel [expanded]="step === 3" (opened)="setStep(3)" hideToggle>
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  Antecedentes Clínicos
+                </mat-panel-title>
+                <mat-panel-description>
+                  <mat-icon class="medical-icon">medical_information</mat-icon>
+                </mat-panel-description>
+              </mat-expansion-panel-header>
+              <div class="antecedentes-datos">
+                <mat-form-field class="form-field" color="accent">
+                  <mat-label>Biotipo</mat-label>
+                  <mat-select formControlName="biotipo" required>
+                    <mat-option *ngFor="let tipo of biotipos" [value]="tipo.name">
+                      {{tipo.name}}
+                    </mat-option>
+                  </mat-select>
+                  <mat-error *ngIf="formPaciente.get('biotipo')?.hasError('required')">Por favor, seleccione un Biotipo
+                  </mat-error>
+                </mat-form-field>
+                <mat-form-field class="form-field" color="accent">
+                  <mat-label>Fototipo Cut&#225;neos</mat-label>
+                  <mat-select formControlName="fototipo" required>
+                    <mat-option *ngFor="let tipo of fototipos" [value]="tipo.name">
+                      {{tipo.name}}
+                    </mat-option>
+                  </mat-select>
+                  <mat-error *ngIf="formPaciente.get('fototipo')?.hasError('required')">Por favor, seleccione un Fototipo
+                  </mat-error>
+                </mat-form-field>
+                <mat-form-field class="form-field" color="accent">
+                  <mat-label>Afectación Cutánea</mat-label>
+                  <input matInput type="text" formControlName="afeccion_cutanea">
+                </mat-form-field>
+                <mat-form-field class="form-field" color="accent">
+                  <mat-label>Alergias</mat-label>
+                  <textarea matInput formControlName="alergias"></textarea>
+                </mat-form-field>
+                <mat-form-field class="form-field" color="accent">
+                  <mat-label>Medicamentos Prescriptos</mat-label>
+                  <textarea matInput formControlName="medicamentos"></textarea>
+                </mat-form-field>
+                <mat-form-field class="form-field" color="accent">
+                  <mat-label>Tratamiento</mat-label>
+                  <textarea matInput formControlName="tratamientos_clinicos"></textarea>
+                </mat-form-field>
+              </div>
+              <mat-action-row>
+                <button mat-button color="warn" (click)="prevStep()">Anterior</button>
+              </mat-action-row>
+            </mat-expansion-panel>
+          </mat-accordion>
+        </div>
+        <div class="btn-agregar">
+          <button mat-flat-button color="primary" (click)="volver()">
+            <mat-icon aria-hidden="false">arrow_back</mat-icon>
+            Volver
+          </button>
+          <button mat-flat-button color="accent" [disabled]="formPaciente.invalid || clickGuardar" (click)="guardar()">
+            <mat-icon aria-hidden="false">how_to_reg</mat-icon>
+            Guardar
+          </button>
+        </div>
+      </div>
+    </mat-card>
+  </div>
+</div>

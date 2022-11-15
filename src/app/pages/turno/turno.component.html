@@ -1,0 +1,78 @@
+<app-cargando [cargando]="cargando"></app-cargando>
+
+<div class="container">
+  <div class="turno-content">
+    <mat-card>
+      <h2>
+        Gestión de Turnos
+      </h2>
+      <div class="row-turno">
+        <div class="dia-select card">
+          <div class="container">
+            <mat-accordion>
+              <div>
+                <mat-expansion-panel (opened)="abrirPanel = true" (closed)="abrirPanel = false"
+                  *ngFor="let turno of turnos">
+                  <mat-expansion-panel-header>
+                    <mat-panel-title>
+                      {{turno.fecha_turno | date:'dd/MM/yyyy'}} {{turno.hora}}
+                    </mat-panel-title>
+                    <mat-panel-description>
+                      {{turno.estado[0] ? turno.estado[0].descripcion : '-'}}
+                    </mat-panel-description>
+                    <mat-panel-description>
+                      {{turno.tratamiento[0] ? turno.tratamiento[0].descripcion : '-'}}
+                    </mat-panel-description>
+                  </mat-expansion-panel-header>
+                  <div class="card-paciente-detalle">
+                    <app-card-persona [paciente]="turno.paciente[0]"></app-card-persona>
+                    <div class="botonesLista">
+                      <!-- <button mat-flat-button class="button-reprogramar" color="primary" (click)="reprogramar(turno)">
+                        <mat-icon aria-hidden="false">edit_calendar</mat-icon>
+                        Reprogramar FALTA
+                      </button> -->
+                      <button mat-flat-button class="button-camb-est" (click)="cambiarEstado(turno)">
+                        <mat-icon aria-hidden="false">free_cancellation</mat-icon>
+                        Editar Turno
+                      </button>
+                      <button mat-flat-button class="button-reprogramar" color="primary" (click)="consultarHistorial(turno)">
+                        <mat-icon aria-hidden="false">history</mat-icon>
+                        Historial
+                      </button>
+                      <button mat-flat-button color="accent" (click)="detalleDelPaciente(turno.id_paciente)">
+                        <mat-icon aria-hidden="false">person_search</mat-icon>
+                        Ver Paciente
+                      </button>
+                    </div>
+                  </div>
+                </mat-expansion-panel>
+              </div>
+            </mat-accordion>
+          </div>
+        </div>
+        <div class="calendar-card card">
+          <div class="container">
+            <mat-card class="card-turno">
+              <div class="calendario-card">
+                <mat-calendar [minDate]="hoy" [(selected)]="selected" color="accent" (click)="consultar()">
+                </mat-calendar>
+              </div>
+              <mat-form-field class="calendario-piker" color="accent">
+                <mat-label>Fecha</mat-label>
+                <input matInput [min]="hoy" [matDatepicker]="picker" color="accent" (dateInput)="consultarTurno($event)">
+                <mat-datepicker-toggle matSuffix [for]="picker" ></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+              </mat-form-field>
+            </mat-card>
+            <mat-card>
+              <button class="btn-agregar" mat-flat-button color="accent" (click)="agendar()">
+                <mat-icon aria-hidden="false">event</mat-icon>
+                Agendar
+              </button>
+            </mat-card>
+          </div>
+        </div>
+      </div>
+    </mat-card>
+  </div>
+</div>

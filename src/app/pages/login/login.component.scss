@@ -1,0 +1,109 @@
+body {
+    background: #f1dbea !important;
+    justify-content: center;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    padding: 15vh;
+    justify-content: center;
+    background: #f1dbea;
+    align-items: center;
+   
+    .login-container {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        margin: 1%;
+        width: 100vh;
+        background: #fef5fb;
+        justify-content: center;
+        border: 15px solid #d0afd2;
+
+        .img-login {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            border-right: 10px solid #d0afd2;
+            .icon-header {
+                width: 45vh;
+            }
+        }
+        .container-lg {
+            display: flex;
+            flex-direction: column;
+            display: block;
+            margin: 2rem 0;
+            width: 100%;
+            padding: 2rem;
+            h1 {
+                color: #956592;
+                text-align: center;
+                text-transform: uppercase;
+                font-size: 250%
+                // color: #4CAF50;
+            }
+            .ingreso-login {
+                .data-ingreso {
+                    display: flex;
+                    flex-direction: column;
+                    mat-form-field {
+                        padding: 3%;
+                        // color: red;
+                    }
+                }
+            }
+            .data-botones {
+                display: flex;
+                flex-direction: column;
+            }
+        }
+    }
+
+}
+
+@media all and (max-width: 768px) {
+    .container {
+        padding: 10px;
+        height: 100vh;
+        justify-content: center;
+        .login-container {
+            flex-direction: column;
+            width: 90%;
+            padding: 2%;
+           border: none;
+            .img-login {
+            border: none;
+            width: 20%;
+            border: 5px solid #d0afd2;
+
+                .icon-header {
+                    margin: 0 auto;
+                    width: 100%;
+                }
+            }
+             .container-lg {
+                padding: 0;
+                width: 60%;
+            }
+        }
+    }
+   
+}
+
+
+@media all and (max-width: 500px) {
+    .container {
+        justify-content: flex-start;
+        .login-container {
+            .img-login {
+            width: 50%;
+            }
+            .container-lg {
+                width: 100%;
+            }
+        }
+    }
+   
+}

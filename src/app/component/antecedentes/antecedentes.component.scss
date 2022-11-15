@@ -1,0 +1,10 @@
+
+.contenido-panel{
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  .mat-form-field {
+      margin-right: 2vh;
+    }
+}
+

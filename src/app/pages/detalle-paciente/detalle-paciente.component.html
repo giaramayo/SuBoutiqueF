@@ -1,0 +1,189 @@
+<app-cargando [cargando]="cargando"></app-cargando>
+
+<div class="container">
+  <div class="detalle-paciente-container">
+    <mat-card>
+      <h2 class="txt-titulo">
+        Detalle del Paciente
+      </h2>
+      <div class="row detalle-paciente-box">
+        <div class="container form-detalle">
+          <mat-accordion class="example-headers-align">
+            <!-- Datos del paciente -->
+            <mat-expansion-panel  [expanded]="step === 0" (opened)="setStep(0)" hideToggle>
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  Datos del paciente
+                </mat-panel-title>
+                <mat-panel-description>
+                  <mat-icon>account_circle</mat-icon>
+                </mat-panel-description>
+              </mat-expansion-panel-header>
+              <div class="contenido-panel">
+                <div class="row-cols-2">
+                  <mat-form-field class="form-field" color="accent">
+                    <mat-label>Nombre</mat-label>
+                    <input matInput type="text" readonly [ngModel]="paciente.nombre">
+                  </mat-form-field>
+        
+                  <mat-form-field class="form-field" color="accent">
+                    <mat-label>Apellido</mat-label>
+                    <input matInput type="text" readonly [(ngModel)]="paciente.apellido">
+                  </mat-form-field>
+                </div>
+      
+                <div class="row-cols-2">
+                  <mat-form-field class="form-field" color="accent">
+                    <mat-label>Tipo Documento</mat-label>
+                    <input matInput type="text" readonly [(ngModel)]="paciente.tipo_documento">
+                  </mat-form-field>
+        
+                  <mat-form-field class="form-field" color="accent">
+                    <mat-label>Documento</mat-label>
+                    <input matInput type="text" readonly [(ngModel)]="paciente.documento">
+                  </mat-form-field>
+                </div>
+                
+                <div class="row-cols-2">
+                  <mat-form-field  class="fill" color="accent" >
+                    <mat-label>Fecha de Nacimiento</mat-label>
+                    <input matInput readonly [matDatepicker]="picker" [(ngModel)]="paciente.fecha_nacimiento">
+                    <mat-hint>MM/DD/YYYY</mat-hint>
+                    <mat-datepicker-toggle disabled="true" matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker disabled="true" #picker startView="year" ></mat-datepicker>
+                  </mat-form-field>
+
+                  <mat-form-field class="form-field" color="accent">
+                    <mat-label>Edad</mat-label>
+                    <input matInput type="number" readonly [(ngModel)]="paciente.edad">
+                  </mat-form-field>
+                </div>
+              </div>
+            <mat-action-row>
+              <button mat-button color="primary" (click)="nextStep()">Siguiente</button>
+            </mat-action-row>
+    
+            </mat-expansion-panel>
+            <!-- Datos personales -->
+            <mat-expansion-panel  [expanded]="step === 1" (opened)="setStep(1)" hideToggle>
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  Datos personales
+                </mat-panel-title>
+                <mat-panel-description>
+                  <mat-icon>contact_mail</mat-icon>
+                </mat-panel-description>
+              </mat-expansion-panel-header>
+              <div class="contenido-panel">
+                <div class="row-cols-2">
+                  <mat-form-field class="form-field" color="accent">
+                    <mat-label>Teléfono</mat-label>
+                    <input matInput type="text" readonly [(ngModel)]="paciente.telefono">
+                  </mat-form-field>
+                  <mat-form-field class="form-field" color="accent">
+                    <mat-label>Email</mat-label>
+                    <input matInput type="text" readonly [(ngModel)]="paciente.correo">
+                  </mat-form-field>
+                </div>
+              </div>
+              <mat-action-row>
+                <button mat-button color="warn" (click)="prevStep()">Anterior</button>
+                <button mat-button color="primary" (click)="nextStep()">Siguiente</button>
+              </mat-action-row>    
+            </mat-expansion-panel>
+            <!-- Dirección -->
+            <mat-expansion-panel  [expanded]="step === 2" (opened)="setStep(2)" hideToggle>
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  Dirección
+                </mat-panel-title>
+                <mat-panel-description>
+                  <mat-icon>map</mat-icon>
+                </mat-panel-description>
+              </mat-expansion-panel-header>
+              <div class="contenido-panel">
+                <div class="row-cols-2">
+                  <mat-form-field class="form-field" color="accent">
+                    <mat-label>Calle</mat-label>
+                    <input matInput type="text" readonly [(ngModel)]="paciente.calle">
+                  </mat-form-field>
+        
+                  <mat-form-field class="form-field" color="accent">
+                    <mat-label>Altura</mat-label>
+                    <input matInput type="text" readonly [(ngModel)]="paciente.numero">
+                  </mat-form-field>
+                </div>
+                <div class="row-cols-2">
+                  <mat-form-field class="form-field" color="accent">
+                    <mat-label>Localidad</mat-label>
+                    <input matInput type="text" readonly [(ngModel)]="paciente.barrio.descripcion">
+                  </mat-form-field>
+        
+                  <mat-form-field class="form-field" color="accent">
+                    <mat-label>Código Postal</mat-label>
+                    <input matInput type="text" readonly [(ngModel)]="paciente.codigo_postal">
+                  </mat-form-field>
+                </div>
+              </div>
+              <mat-action-row>
+                <button mat-button color="warn" (click)="prevStep()">Anterior</button>
+                <button mat-button color="primary" (click)="nextStep()">Siguiente</button>
+              </mat-action-row> 
+            </mat-expansion-panel>
+            <!-- Antecedentes Clinicos -->
+            <mat-expansion-panel  [expanded]="step === 3" (opened)="setStep(3)" hideToggle>
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  Antecedentes Clínicos
+                </mat-panel-title>
+                <mat-panel-description>
+                  <mat-icon>medical_information</mat-icon>
+                </mat-panel-description>
+              </mat-expansion-panel-header>
+              <div class="contenido-panel">
+                <app-antecedentes [antecedente]="paciente.antecedente"></app-antecedentes>
+              </div>
+              <mat-action-row>
+                <button mat-button color="warn" (click)="prevStep()">Anterior</button>
+                <button mat-button color="primary" (click)="nextStep()">Siguiente</button>
+              </mat-action-row>
+            </mat-expansion-panel>
+            <!-- Historial -->
+            <mat-expansion-panel  [expanded]="step === 4" (opened)="setStep(4)" hideToggle>
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  Historial
+                </mat-panel-title>
+                <mat-panel-description>
+                  <mat-icon>history</mat-icon>
+                </mat-panel-description>
+              </mat-expansion-panel-header>
+              <mat-form-field appearance="fill" color="accent" class="cls-filtro">
+                <mat-label>Buscar historial</mat-label>
+                <input matInput (keyup)="filtrar($event)" #input>
+              </mat-form-field>
+              <app-lista-historial [dataSource]="historial"></app-lista-historial>
+              <mat-action-row>
+                <button mat-button color="warn" (click)="prevStep()">Anterior</button>
+              </mat-action-row>
+            </mat-expansion-panel>
+          </mat-accordion>
+        </div>
+        <div class="btn-detalle">          
+          <button mat-flat-button color="accent" (click)="modificar()">
+            <mat-icon aria-hidden="false">edit_note</mat-icon>
+            Modificar
+          </button>
+          <button mat-flat-button color="warn" (click)="eliminar()">
+            <mat-icon aria-hidden="false">delete_forever</mat-icon>
+            Dar de Baja
+          </button>
+          <button mat-flat-button color="primary" (click)="volver()">
+            <mat-icon aria-hidden="false">arrow_back</mat-icon>
+            Volver
+          </button>
+        </div>  
+      </div>
+    </mat-card>
+  </div>
+</div>

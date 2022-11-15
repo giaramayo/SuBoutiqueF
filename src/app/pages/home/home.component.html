@@ -1,0 +1,121 @@
+<app-cargando [cargando]="cargando"></app-cargando>
+
+<div class="container">
+    <h1 class="txt-titulo">
+        Bienvenido a SuBoutique
+    </h1>
+    <div class="home-content">
+        <div class="estadistica">
+            <mat-card>
+            <h2>Estadísticas del día</h2>
+            <mat-tab-group>
+                <mat-tab label="Tratamientos">
+                    <!-- <app-estadistica-de-torta [fecha]="fecha"></app-estadistica-de-torta> -->
+                    <h3>Tratamientos del día</h3>
+                    <p class="descripcion-p"> Se muestra a continuación un gráfico que detalla la cantidad y tipos de tratamientos agendados para el día: </p>
+                    <p class="descripcion-p anio"> Dia: {{hoy | date:'dd/MM/yyyy'}} - Total de turnos: {{totalTurnos}}</p>
+                    <div class="chart">
+                        <canvas baseChart
+                                [data]="pieChartTratamientos"
+                                [type]="pieChartType"
+                                [options]="pieChartOptions"
+                                >
+                        </canvas>
+                     </div>
+                     <div class="tabla-valores">
+                        <table class="table m-0">
+                          <thead class="thead-light">
+                            <tr>
+                              <th scope="col" class="text-center">Tratamiento</th>
+                              <th scope="col" class="text-center">Cantidad</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr *ngFor="let tratamiento of tratamientos">
+                              <td class="font-weight-bold td-description">{{tratamiento.name}}</td>
+                              <td class="font-weight-bold td-valores">{{tratamiento.value}}</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+
+                </mat-tab>
+                <mat-tab label="Turnos"> 
+                    <h3>Estados de turnos del día</h3>
+                    <p class="descripcion-p"> Se muestra a continuación un gráfico que detalla los estados de los turnos tomados para el día de hoy:     </p>
+                    <p class="descripcion-p anio"> Dia: {{hoy | date:'dd/MM/yyyy'}} - Total de turnos: {{totalTurnos}}</p>
+                    <div class="chart">
+                        <canvas baseChart
+                                [data]="pieChartEstados"
+                                [type]="pieChartType"
+                                [options]="pieChartOptions"
+                                >
+                        </canvas>
+                      </div>
+                      <div class="tabla-valores">
+                        <table class="table m-0">
+                          <thead class="thead-light">
+                            <tr>
+                              <th scope="col" class="text-center">Estados</th>
+                              <th scope="col" class="text-center">Cantidad</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr *ngFor="let turno of turnosDia">
+                              <td class="font-weight-bold td-description">{{turno.name}}</td>
+                              <td class="font-weight-bold td-valores">{{turno.value}}</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+
+                </mat-tab>
+                <!-- <mat-tab label="Third"> Content 3 </mat-tab> -->
+              </mat-tab-group>
+            </mat-card>
+        </div>
+        <div class="eventos">
+            <div class="acciones">
+                <mat-card>
+                <button mat-flat-button color="primary" class="button-camb-est" (click)="agendar()">
+                    <mat-icon aria-hidden="false">event</mat-icon>
+                    Agendar Turno
+                </button>
+                <button mat-flat-button color="accent" (click)="agregarPaciente()">
+                    <mat-icon aria-hidden="false">person_add</mat-icon>
+                    Agregar Paciente
+                </button>
+                <!-- <button mat-flat-button color="primary">
+                    <mat-icon aria-hidden="false">settings</mat-icon>
+                    Modificar Contraseña - FALTA
+                </button> -->
+            </mat-card>
+            </div>
+            <div class="turnos">
+                <mat-card>
+                    <h2>Turnos Próximos</h2>
+                    <mat-card-subtitle>{{hoy | date:'dd/MM/yyyy'}} </mat-card-subtitle>
+                    <mat-card-content>
+                        <mat-accordion>
+                        <mat-expansion-panel *ngFor="let turno of turnosHoy">
+                          <mat-expansion-panel-header>
+                            <mat-panel-title>
+                                {{turno.fecha_turno | date:'dd/MM/yyyy'}} {{turno.hora}}
+                            </mat-panel-title>
+                            <mat-panel-description>
+                                {{turno.estado[0] ? turno.estado[0].descripcion : '-'}} - {{turno.tratamiento[0] ? turno.tratamiento[0].descripcion : '-'}}
+                            </mat-panel-description>
+                          </mat-expansion-panel-header>
+                          <app-card-persona [paciente]="turno.paciente[0]"></app-card-persona>                          
+                        </mat-expansion-panel>
+                      </mat-accordion>
+                    </mat-card-content>               
+                    <mat-card-footer>
+                    </mat-card-footer>
+                  </mat-card>
+            </div>
+        </div>
+    </div>
+   
+  </div>
+

@@ -1,0 +1,39 @@
+<app-cargando [cargando]="cargando"></app-cargando>
+
+<div class="container">
+  <div class="login-container">
+    <div class="img-login">
+      <img class="icon-header" [src]="logo">
+    </div>
+    <div class="container-lg">
+      <div class="row ingreso-login">
+        <h1>Ingresar</h1>
+        <form class="data-ingreso" [formGroup]="formLogin">
+          <mat-form-field class="form-field" color="accent">
+            <mat-label>Usuario</mat-label>
+            <input matInput type="email" required formControlName="usuario">
+            <!-- <mat-error *ngIf="formLogin.get('usuario')?.invalid">
+              Este campo es requerido
+            </mat-error> -->
+            <mat-error *ngIf="formLogin.get('usuario')?.hasError('pattern')">
+              El usuario ingresado no es válido
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field class="form-field" color="accent">
+            <mat-label>Contraseña</mat-label>
+            <input matInput type="password" required formControlName="contrasenia">
+            <mat-error *ngIf="formLogin.get('contrasenia')?.invalid">
+              Este campo es requerido
+            </mat-error>
+          </mat-form-field>
+        </form>
+        <mat-card-actions class="data-botones">
+          <button mat-flat-button color="accent" [disabled]="formLogin.invalid" (click)="ingresar()">
+            Ingresar
+          </button>
+          <!-- <a href="recuperar">Recuperar usuario</a> -->
+        </mat-card-actions>
+      </div>
+    </div>
+  </div>
+</div>
